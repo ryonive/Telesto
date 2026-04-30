@@ -231,7 +231,7 @@ namespace Telesto
 
         }
 
-        public string Version = "1.0.0.9";
+        public string Version = "1.0.1.0";
 
         private Parser _pr = null;
         private Endpoint _ep = null;
@@ -315,7 +315,7 @@ namespace Telesto
             _waymarks[Waymark.WaymarkEnum.Four] = new Waymark();
         }
 
-        private void _cs_TerritoryChanged(ushort e)
+        private void _cs_TerritoryChanged(uint e)
         {
             _territoryChanged = true;
         }
@@ -1142,7 +1142,7 @@ namespace Telesto
             }
             if (cbs.Count == 0)
             {
-                var pc = _svc.cs.LocalPlayer;
+                var pc = _svc.ot.LocalPlayer;
                 cbs.Add(new Combatant()
                 {
                     displayname = pc.Name.ToString(),
@@ -1369,10 +1369,10 @@ namespace Telesto
                     return go is BattleChara ? ((BattleChara)go).CastTargetObjectId.ToString("X8") : "00000000";
                 case "distance":
                     {
-                        if (_svc.cs.LocalPlayer != null)
+                        if (_svc.ot.LocalPlayer != null)
                         {
-                            float xdev = _svc.cs.LocalPlayer.Position.X - go.Position.X;
-                            float zdev = _svc.cs.LocalPlayer.Position.Z - go.Position.Z;
+                            float xdev = _svc.ot.LocalPlayer.Position.X - go.Position.X;
+                            float zdev = _svc.ot.LocalPlayer.Position.Z - go.Position.Z;
                             return Math.Sqrt((xdev * xdev) + (zdev * zdev)).ToString(CultureInfo.InvariantCulture);
                         }
                     }
@@ -1428,7 +1428,7 @@ namespace Telesto
                     }
                     else if (x == "_ffxivplayer")
                     {                        
-                        val = _svc.cs.LocalPlayer.Name.ToString();
+                        val = _svc.ot.LocalPlayer.Name.ToString();
                         found = true;
                     }
                     else if (x.IndexOf("_addr") == 0)
@@ -1534,11 +1534,11 @@ namespace Telesto
 
         internal Vector3 GetLocalPosition()
         {
-            if (_svc.cs.LocalPlayer == null)
+            if (_svc.ot.LocalPlayer == null)
             {
                 return new Vector3();
             }
-            return _svc.cs.LocalPlayer.Position;
+            return _svc.ot.LocalPlayer.Position;
         }
 
         internal Vector3 TranslateToScreen(double x, double y, double z)
@@ -1800,7 +1800,7 @@ namespace Telesto
             }
             bool ter = _territoryChanged;
             bool log = _loggedIn;
-            bool blargimded = _svc.cs.LocalPlayer != null ? _svc.cs.LocalPlayer.CurrentHp == 0 : false;
+            bool blargimded = _svc.ot.LocalPlayer != null ? _svc.ot.LocalPlayer.CurrentHp == 0 : false;
             bool ded = _destroyDoodles;
             foreach (Doodle d in ds)
             {
